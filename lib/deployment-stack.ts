@@ -14,10 +14,6 @@ export class ApiDeploymentStack extends cdk.Stack {
       directory: join(__dirname, "../../", "API"),
     });
 
-    const asImage = new DockerImageAsset(this, "AuthServerImage", {
-      directory: join(__dirname, "../../", "auth"),
-    });
-
     const vpc = new ec2.Vpc(this, "ApplicationVpc", { maxAzs: 2 });
 
     const cluster = new ecs.Cluster(this, "Cluster", {
@@ -33,7 +29,7 @@ export class ApiDeploymentStack extends cdk.Stack {
         desiredCount: 1,
         taskImageOptions: {
           image: ecs.ContainerImage.fromDockerImageAsset(image),
-          containerPort: 80,
+          containerPort: 3000,
         },
         memoryLimitMiB: 512,
         publicLoadBalancer: true,
